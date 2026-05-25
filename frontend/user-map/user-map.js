@@ -153,9 +153,18 @@ async function updateUserProfile(name, email) {
 
         if (response.ok) {
             currentUser = await response.json();
+
+            localStorage.setItem(
+                'currentUser',
+                JSON.stringify(currentUser)
+            );
+            localStorage.setItem('userData', JSON.stringify(currentUser));
+
             document.getElementById('userNameDisplay').textContent = currentUser.name;
             document.getElementById('profileName').textContent = currentUser.name;
+
             showToast('Профиль обновлён', 'success');
+
             return true;
         }
     } catch (e) {}
@@ -794,74 +803,96 @@ window.closeEditProfileModal = closeEditProfileModal;
 window.saveProfile = saveProfile;
 
 // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-
 async function init() {
     console.log('Инициализация RuTrip...');
-    
+
     currentUser = await fetchCurrentUser();
-    
+
     const regionsFromBackend = await fetchRegions();
+
+    regionsData = {};
+
     if (regionsFromBackend && regionsFromBackend.length > 0) {
-        regionsData = {};
-        regionsFromBackend.forEach(r => { regionsData[r.name] = { id: r.id, sights: r.sights || [] }; });
-        totalRegionsCount = Object.keys(regionsData).length;
-        document.getElementById('totalRegionsCount').textContent = totalRegionsCount;
-    } else {
-        autoFillRegionsData();
+        regionsFromBackend.forEach(r => {
+            regionsData[r.name] = {
+                id: r.id,
+                sights: r.sights || []
+            };
+        });
     }
-    
+
+    autoFillRegionsData();
+
     if (currentUser) {
         visitedRegions = await fetchVisitedRegions();
         friendsList = await fetchFriends();
         updateFriends();
     }
-    
+
     updateAllStats();
     updateAchievements();
     updateMapColors();
-    
+
     setupMapInteractivity();
     initFloatingIcons();
     initMascot();
     initSidebar();
     initProfileDropdown();
     checkAuth();
-    
+
     document.getElementById('friendsBtn')?.addEventListener('click', () => {
         document.getElementById('friendsPanel')?.classList.toggle('show');
         document.getElementById('achievementsPanel')?.classList.remove('show');
         updateFriends();
     });
+
     document.getElementById('achievementsBtn')?.addEventListener('click', () => {
         document.getElementById('achievementsPanel')?.classList.toggle('show');
         document.getElementById('friendsPanel')?.classList.remove('show');
         updateAchievements();
     });
+
     document.getElementById('friendsMenuLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('friendsPanel')?.classList.toggle('show');
         document.getElementById('achievementsPanel')?.classList.remove('show');
         updateFriends();
     });
+
     document.getElementById('achievementsMenuLink')?.addEventListener('click', (e) => {
         e.preventDefault();
         document.getElementById('achievementsPanel')?.classList.toggle('show');
         document.getElementById('friendsPanel')?.classList.remove('show');
         updateAchievements();
     });
+
     document.getElementById('shareBtn')?.addEventListener('click', () => {
         const visitedCount = Object.keys(visitedRegions).length;
         const text = `Я путешествую по России и уже посетил(а) ${visitedCount} регионов! Присоединяйся к RuTrip! 🗺️`;
+
         if (navigator.share) {
-            navigator.share({ title: 'RuTrip', text, url: window.location.href }).catch(() => navigator.clipboard.writeText(text));
+            navigator.share({
+                title: 'RuTrip',
+                text,
+                url: window.location.href
+            }).catch(() => navigator.clipboard.writeText(text));
         } else {
             navigator.clipboard.writeText(text);
         }
+
         showToast('Текст скопирован!', 'success');
     });
-    document.getElementById('logoutLink')?.addEventListener('click', (e) => { e.preventDefault(); logout(); });
-    document.getElementById('logoutLinkSidebar')?.addEventListener('click', (e) => { e.preventDefault(); logout(); });
-    
+
+    document.getElementById('logoutLink')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout();
+    });
+
+    document.getElementById('logoutLinkSidebar')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        logout();
+    });
+
     console.log('RuTrip инициализирован');
 }
 
