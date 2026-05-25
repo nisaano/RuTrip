@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | RuTrip - Путеводитель по России</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили остаются без изменений */
+        .auth-page {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.05) 0%, rgba(255,255,255,1) 100%);
+        }
+        
+        .auth-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            padding: 40px 32px;
+            text-align: center;
+            color: white;
+        }
+        
+        .auth-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .auth-header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .auth-form {
+            padding: 40px 32px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 15px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        .form-input.error {
+            border-color: #f44336;
+        }
+        
+        .error-message {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 6px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .password-requirements {
+            background-color: var(--secondary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .requirement:last-child {
+            margin-bottom: 0;
+        }
+        
+        .requirement i {
+            width: 18px;
+            font-size: 14px;
+        }
+        
+        .requirement.valid {
+            color: var(--accent);
+        }
+        
+        .requirement.valid i {
+            color: var(--accent);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        
+        .checkbox-group label {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+        
+        .checkbox-group a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+        
+        .auth-button {
+            width: 100%;
+            padding: 18px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .auth-button:hover {
+            background: var(--accent-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .auth-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+        }
+        
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border);
+        }
+        
+        .social-auth {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .social-button {
+            flex: 1;
+            padding: 14px;
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .social-button:hover {
+            border-color: var(--accent);
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .social-button i {
+            font-size: 20px;
+        }
+        
+        .auth-footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+        
+        .auth-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .mascot-container {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 999;
+        }
+        
+        .mascot {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            animation: float 6s ease-in-out infinite;
+            box-shadow: var(--shadow-hover);
+            transition: transform 0.3s;
+        }
+        
+        .mascot:hover {
+            transform: scale(1.1);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        
+        .mascot-ear {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent-dark);
+            border-radius: 50%;
+            top: -5px;
+        }
+        
+        .mascot-ear.left {
+            left: 15px;
+        }
+        
+        .mascot-ear.right {
+            right: 15px;
+        }
+        
+        .mascot-face {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mascot-eye {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--text);
+            border-radius: 50%;
+            top: 12px;
+        }
+        
+        .mascot-eye.left {
+            left: 10px;
+        }
+        
+        .mascot-eye.right {
+            right: 10px;
+        }
+        
+        .mascot-nose {
+            position: absolute;
+            width: 12px;
+            height: 8px;
+            background-color: var(--accent-dark);
+            border-radius: 50%;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            border-left: 4px solid var(--accent);
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-hover);
+            z-index: 10000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.error {
+            border-left-color: #f44336;
+        }
+        
+        .notification.success {
+            border-left-color: var(--accent);
+        }
+        
+        .notification-message {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        @media (max-width: 576px) {
+            .auth-header {
+                padding: 32px 24px;
+            }
+            
+            .auth-header h1 {
+                font-size: 28px;
+            }
+            
+            .auth-form {
+                padding: 32px 24px;
+            }
+            
+            .social-auth {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">RT</div>
+                <div class="logo-text">Ru<span>Trip</span></div>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-main">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">Карта</a>
+                <a href="#" class="nav-link">Маршруты</a>
+                <a href="#" class="nav-link">Поддержка</a>
+                
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-login">Войти</a>
+                    <a href="registr.html" class="btn btn-register">Регистрация</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Меню</h3>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Главная</a></li>
+            <li><a href="#"><i class="fas fa-map-marked-alt"></i> Моя карта</a></li>
+            <li><a href="#"><i class="fas fa-users"></i> Друзья</a></li>
+            <li><a href="#"><i class="fas fa-trophy"></i> Рейтинги</a></li>
+            <li><a href="#"><i class="fas fa-calendar-alt"></i> События</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> Настройки</a></li>
+            <li><a href="#"><i class="fas fa-question-circle"></i> Помощь</a></li>
+            <li><a href="#" id="logoutLink" style="display: none;"><i class="fas fa-sign-out-alt"></i> Выйти</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="mascot-container">
+        <div class="mascot" id="mascot">
+            <div class="mascot-ear left"></div>
+            <div class="mascot-ear right"></div>
+            <div class="mascot-face">
+                <div class="mascot-eye left"></div>
+                <div class="mascot-eye right"></div>
+                <div class="mascot-nose"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="auth-page">
+        <div class="container auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h1>Создать аккаунт</h1>
+                    <p>Присоединяйтесь к сообществу путешественников</p>
+                </div>
+                
+                <div class="auth-form">
+                    <form id="registerForm">
+                        <div class="form-group">
+                            <label class="form-label">Имя</label>
+                            <input type="text" class="form-input" id="name" name="name" placeholder="Введите ваше имя" required>
+                            <div class="error-message" id="nameError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="email" name="email" placeholder="example@mail.ru" required>
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" class="form-input" id="password" name="password" placeholder="Придумайте пароль" required>
+                            <div class="password-requirements">
+                                <div class="requirement" id="reqLength">
+                                    <i class="fas fa-circle"></i>
+                                    <span>Минимум 8 символов</span>
+                                </div>
+                                <div class="requirement" id="reqNumber">
+                                    <i class="fas fa-circle"></i>
+                                    <span>Хотя бы одна цифра</span>
+                                </div>
+                                <div class="requirement" id="reqLetter">
+                                    <i class="fas fa-circle"></i>
+                                    <span>Хотя бы одна буква</span>
+                                </div>
+                            </div>
+                            <div class="error-message" id="passwordError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Подтвердите пароль</label>
+                            <input type="password" class="form-input" id="confirmPassword" name="confirm_password" placeholder="Повторите пароль" required>
+                            <div class="error-message" id="confirmError"></div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="agree" name="agree" checked>
+                            <label for="agree">
+                                Я согласен с <a href="#" id="termsLink">условиями использования</a> 
+                                и <a href="#" id="privacyLink">политикой конфиденциальности</a>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="auth-button" id="registerButton">
+                            <i class="fas fa-user-plus"></i>
+                            Зарегистрироваться
+                        </button>
+                        
+                        
+                        <div class="auth-footer">
+                            Уже есть аккаунт?
+                            <a href="login.html">Войти</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RuTrip</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">О проекте</a></li>
+                        <li><a href="#">Команда</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Партнеры</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Помощь</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Часто задаваемые вопросы</a></li>
+                        <li><a href="#">Поддержка</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Сообщить об ошибке</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Правовая информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Пользовательское соглашение</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">Условия использования</a></li>
+                        <li><a href="#">Файлы cookie</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Социальные сети</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">ВКонтакте</a></li>
+                        <li><a href="#">Telegram</a></li>
+                        <li><a href="#">Max</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2026 RuTrip</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ========== ТРЕБОВАНИЯ К БЭКЕНДУ ==========
+        // 
+        // 1. БАЗОВЫЙ URL API :
+        const API_BASE_URL = '';
+        //
+        // 2. ЭНДПОИНТЫ:
+        //    POST /register - регистрация        да
+        //    POST /login - вход                  да
+        //    POST /verify-email - подтверждение email  да
+        //    POST /resend-verification - повторная отправка кода нет
+        //    GET|POST /vk/register - регистрация через VK         есть
+        //    GET|POST /telegram/register - регистрация через Telegram
+        //    GET|POST /yandex/register - регистрация через Yandex
+        //
+        // 3. ФОРМАТ ЗАПРОСА НА РЕГИСТРАЦИЮ:
+        //    {
+        //        "name": "Имя пользователя",
+        //        "email": "user@example.com",
+        //        "password": "пароль"
+        //    }
+        //
+        // 4. ФОРМАТ УСПЕШНОГО ОТВЕТА (201 Created):
+        //    {
+        //        "message": "Регистрация успешна. Подтвердите email",
+        //        "user_id": 123,
+        //        "requires_verification": true
+        //    }
+        //
+        // 5. КОДЫ ОШИБОК:
+        //    409 Conflict - email уже существует
+        //    400 Bad Request - неверный формат данных
+        //    500 Internal Server Error - ошибка сервера
+        //
+        // 6. ТРЕБОВАНИЯ К ПАРОЛЮ НА БЭКЕНДЕ:
+        //    - Минимум 8 символов
+        //    - Хотя бы одна цифра
+        //    - Хотя бы одна буква
+        //
+        // 7. НЕОБХОДИМО:
+        //    - Настроить CORS для разрешения запросов с фронтенда
+        //    - Реализовать отправку email с подтверждением регистрации
+        //    - Хранить пароли в зашифрованном виде (bcrypt и т.д.)
+        // ============================================
+
+        function showNotification(message, isError = false) {
+            const oldNotification = document.querySelector('.notification');
+            if (oldNotification) oldNotification.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = `notification ${isError ? 'error' : 'success'}`;
+            notification.innerHTML = `
+                <div class="notification-message">
+                    <i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
+        
+        function showFieldError(fieldId, message) {
+            const input = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            
+            if (input) input.classList.add('error');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.classList.add('show');
+            }
+        }
+        
+        function clearFieldErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.classList.remove('show');
+                el.textContent = '';
+            });
+            document.querySelectorAll('.form-input').forEach(el => {
+                el.classList.remove('error');
+            });
+        }
+        
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        async function registerUser(name, email, password) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        name: name.trim(),
+                        email: email.trim(),
+                        password: password
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    if (response.status === 409) {
+                        throw new Error('Пользователь с таким email уже существует');
+                    } else if (response.status === 400) {
+                        throw new Error(data.message || 'Неверный формат данных');
+                    } else {
+                        throw new Error(data.message || 'Ошибка сервера. Попробуйте позже');
+                    }
+                }
+                
+                showNotification(data.message || 'Регистрация успешна! Проверьте вашу почту для подтверждения');
+                
+                if (data.requires_verification) {
+                    showNotification('Письмо с подтверждением отправлено на ваш email', false);
+                }
+                
+                return { success: true, userId: data.user_id };
+                
+            } catch (error) {
+                showNotification(error.message, true);
+                return { success: false, error: error.message };
+            }
+        }
+        
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirmPassword');
+        const reqLength = document.getElementById('reqLength');
+        const reqNumber = document.getElementById('reqNumber');
+        const reqLetter = document.getElementById('reqLetter');
+        
+        function validatePasswordStrength() {
+            const pass = passwordInput?.value || '';
+            
+            if (pass.length >= 8) {
+                reqLength?.classList.add('valid');
+                if (reqLength) reqLength.querySelector('i').className = 'fas fa-check-circle';
+            } else {
+                reqLength?.classList.remove('valid');
+                if (reqLength) reqLength.querySelector('i').className = 'fas fa-circle';
+            }
+            
+            if (/\d/.test(pass)) {
+                reqNumber?.classList.add('valid');
+                if (reqNumber) reqNumber.querySelector('i').className = 'fas fa-check-circle';
+            } else {
+                reqNumber?.classList.remove('valid');
+                if (reqNumber) reqNumber.querySelector('i').className = 'fas fa-circle';
+            }
+            
+            if (/[a-zA-Zа-яА-Я]/.test(pass)) {
+                reqLetter?.classList.add('valid');
+                if (reqLetter) reqLetter.querySelector('i').className = 'fas fa-check-circle';
+            } else {
+                reqLetter?.classList.remove('valid');
+                if (reqLetter) reqLetter.querySelector('i').className = 'fas fa-circle';
+            }
+        }
+        
+        if (passwordInput) {
+            passwordInput.addEventListener('input', validatePasswordStrength);
+        }
+        
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarClose = document.getElementById('sidebarClose');
+        const overlay = document.getElementById('overlay');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+        
+        if (sidebarClose) {
+            sidebarClose.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        
+        const mascot = document.getElementById('mascot');
+        if (mascot) {
+            mascot.addEventListener('click', function() {
+                this.style.animation = 'none';
+                this.style.transform = 'scale(1.3) rotate(15deg)';
+                
+                setTimeout(() => {
+                    this.style.animation = 'float 6s ease-in-out infinite';
+                    this.style.transform = 'scale(1) rotate(0deg)';
+                }, 500);
+                
+                const messages = [
+                    "Создайте аккаунт и отмечайте посещенные места!",
+                    "С друзьями путешествовать интереснее!",
+                    "После регистрации откроется личная карта",
+                    "Миша поможет выбрать маршрут!"
+                ];
+                
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                showNotification(randomMessage);
+            });
+        }
+        
+        const registerForm = document.getElementById('registerForm');
+        if (registerForm) {
+            registerForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = passwordInput?.value || '';
+                const confirm = confirmInput?.value || '';
+                const agree = document.getElementById('agree')?.checked || false;
+                
+                clearFieldErrors();
+                
+                let hasError = false;
+                
+                if (!name) {
+                    showFieldError('name', 'Введите имя');
+                    hasError = true;
+                } else if (name.length < 2) {
+                    showFieldError('name', 'Имя должно содержать минимум 2 символа');
+                    hasError = true;
+                } else if (name.length > 50) {
+                    showFieldError('name', 'Имя не должно превышать 50 символов');
+                    hasError = true;
+                }
+                
+                if (!email) {
+                    showFieldError('email', 'Введите email');
+                    hasError = true;
+                } else if (!isValidEmail(email)) {
+                    showFieldError('email', 'Введите корректный email');
+                    hasError = true;
+                }
+                
+                if (!password) {
+                    showFieldError('password', 'Введите пароль');
+                    hasError = true;
+                } else if (password.length < 8) {
+                    showFieldError('password', 'Пароль должен содержать минимум 8 символов');
+                    hasError = true;
+                } else if (!/\d/.test(password)) {
+                    showFieldError('password', 'Пароль должен содержать хотя бы одну цифру');
+                    hasError = true;
+                } else if (!/[a-zA-Zа-яА-Я]/.test(password)) {
+                    showFieldError('password', 'Пароль должен содержать хотя бы одну букву');
+                    hasError = true;
+                }
+                
+                if (!confirm) {
+                    showFieldError('confirm', 'Подтвердите пароль');
+                    hasError = true;
+                } else if (password !== confirm) {
+                    showFieldError('confirm', 'Пароли не совпадают');
+                    hasError = true;
+                }
+                
+                if (!agree) {
+                    showNotification('Необходимо согласиться с условиями использования', true);
+                    hasError = true;
+                }
+                
+                if (hasError) return;
+                
+                const button = document.getElementById('registerButton');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Создание аккаунта...';
+                button.disabled = true;
+                
+                const result = await registerUser(name, email, password);
+                
+                if (result.success) {
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            });
+        }
+        
+        const vkRegisterBtn = document.getElementById('vkRegisterBtn');
+        const telegramRegisterBtn = document.getElementById('telegramRegisterBtn');
+        const yandexRegisterBtn = document.getElementById('yandexRegisterBtn');
+        
+        if (vkRegisterBtn) {
+            vkRegisterBtn.addEventListener('click', () => {
+                window.location.href = `${API_BASE_URL}/auth/vk/register`;
+            });
+        }
+        
+        if (telegramRegisterBtn) {
+            telegramRegisterBtn.addEventListener('click', () => {
+                window.location.href = `${API_BASE_URL}/auth/telegram/register`;
+            });
+        }
+        
+        if (yandexRegisterBtn) {
+            yandexRegisterBtn.addEventListener('click', () => {
+                window.location.href = `${API_BASE_URL}/auth/yandex/register`;
+            });
+        }
+        
+        const termsLink = document.getElementById('termsLink');
+        const privacyLink = document.getElementById('privacyLink');
+        
+        if (termsLink) {
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open('terms.html', '_blank');
+            });
+        }
+        
+        if (privacyLink) {
+            privacyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open('privacy.html', '_blank');
+            });
+        }
+    </script>
+</body>
+</html>

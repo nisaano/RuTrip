@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RuTrip - Амурская область</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .sight-hero {
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        .sight-hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+        .sight-hero .region-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--secondary);
+            color: var(--text);
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        .back-button:hover {
+            background-color: var(--accent);
+            color: white;
+            transform: translateX(-5px);
+        }
+
+        .region-description {
+            background-color: var(--secondary);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: var(--shadow);
+        }
+        .region-description p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+
+        .sights-section {
+            margin-bottom: 64px;
+        }
+        .section-header {
+            margin-bottom: 32px;
+        }
+        .section-header h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .sight-card {
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        .sight-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        .sight-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .sight-content {
+            padding: 25px;
+        }
+        .sight-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        .sight-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        .sight-location i {
+            font-size: 14px;
+        }
+        .sight-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .sight-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .sight-tag {
+            background-color: var(--secondary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .nav-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+            margin-top: 30px;
+        }
+        .nav-row .back-button {
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+        .nav-row .region-badge {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 768px) {
+            .sights-grid {
+                grid-template-columns: 1fr;
+            }
+            .sight-hero h1 {
+                font-size: 36px;
+            }
+            .nav-row .region-badge {
+                position: static;
+                transform: none;
+                margin-left: auto;
+                margin-right: auto;
+                white-space: normal;
+                font-size: 14px;
+            }
+            .nav-row {
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">RT</div>
+                <div class="logo-text">Ru<span>Trip</span></div>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="nav-main">
+                <a href="../index.html" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">Поддержка</a>
+                
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn btn-login"><a href="../login.html" class="forgot-link">Войти</a></button>
+                    <button class="btn btn-register"><a href="../registr.html" class="forgot-linkReg">Зарегистрироваться</a></button>
+                </div>
+                <div class="auth-buttons" id="profileButton" style="display: none;">
+                    <button class="btn btn-register" id="profileBtn">Профиль</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Меню</h3>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-links">
+            <li><a href="../index.html">Главная</a></li>
+            <li><a href="#">Моя карта</a></li>
+            <li><a href="#">Друзья</a></li>
+            <li><a href="#">Рейтинги</a></li>
+            <li><a href="#">События</a></li>
+            <li><a href="#">Настройки</a></li>
+            <li><a href="#">Помощь</a></li>
+            <li><a href="#" id="logoutLink">Выйти</a></li>
+        </ul>
+    </div>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="mascot-container">
+        <div class="mascot" id="mascot">
+            <div class="mascot-ear left"></div>
+            <div class="mascot-ear right"></div>
+            <div class="mascot-face">
+                <div class="mascot-eye left"></div>
+                <div class="mascot-eye right"></div>
+                <div class="mascot-nose"></div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="nav-row">
+            <a href="../Dalnevostochny_rayon/Dalnevostochny_rayon.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> Вернуться
+            </a>
+            <div class="region-badge">Дальневосточный экономический район</div>
+        </div>
+
+        <section class="sight-hero">
+            <h1>Амурская область</h1>
+            <p style="font-size: 20px; color: var(--text-secondary); max-width: 800px; margin: 0 auto;">
+                Ворота на Дальний Восток — край космодрома «Восточный» и великой реки Амур
+            </p>
+        </section>
+
+        <section class="region-description">
+            <p><strong>Амурская область</strong> — уникальный регион на юго-востоке России, расположенный в бассейне реки Амур. Это земля удивительных контрастов: здесь соседствуют бескрайние таежные леса и космические просторы космодрома «Восточный». Область известна своими живописными водохранилищами, заповедными местами и богатейшей историей освоения Дальнего Востока. Благодаря строительству космодрома регион стал одним из самых технологически развитых на Дальнем Востоке.</p>
+            
+            <div style="display: flex; gap: 25px; margin-top: 35px; flex-wrap: wrap;">
+                <div style="flex: 1; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: white; height: 200px;">
+                    <img src="https://historyrussia.org/images/Oblasti_Krae_Repablik/Amursk_oblast.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="flex: 1; border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: white; height: 200px;">
+                    <img src="https://visitamur.ru/upload/vid_blagoveshensk.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Главные места Благовещенска -->
+        <section class="sights-section">
+            <div class="section-header">
+                <h2>Главные места столицы Амурской области</h2>
+            </div>
+            <div class="sights-grid">
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://avatars.mds.yandex.net/i?id=7c052ee726965bb3c833fe57edaa5f69_l-13509485-images-thumbs&n=13');"></div>
+                    <div class="sight-content">
+                        <h3>Набережная реки Амур</h3>
+                        
+                        <p>Одна из красивейших набережных Дальнего Востока. Отсюда открывается потрясающий вид на китайский город Хэйхэ, находящийся прямо напротив через реку. Особенно красиво здесь на закате.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Набережная</span>
+                            <span class="sight-tag">Прогулки</span>
+                            <span class="sight-tag">Фотозона</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://avatars.mds.yandex.net/get-altay/2402012/2a0000017465f91e0fdef0452b2d28a0f915/orig');"></div>
+                    <div class="sight-content">
+                        <h3>Триумфальная арка</h3>
+                        
+                        <p>Историческая Триумфальная арка, построенная в честь приезда цесаревича Николая (будущего императора Николая II) в 1891 году. Символ Благовещенска.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Архитектура</span>
+                            <span class="sight-tag">История</span>
+                            <span class="sight-tag">Фотозона</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://museumamur.org/upload/iblock/0c8/0c869fb4ca531632f689557d587e2500.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Амурский областной краеведческий музей</h3>
+                        
+                        <p>Один из старейших музеев Дальнего Востока, основанный в 1891 году. Здесь собраны уникальные экспонаты: от археологических находок до материалов об освоении космоса.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Музей</span>
+                            <span class="sight-tag">История</span>
+                            <span class="sight-tag">Этнография</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://habinfo.moedev.ru/media_new/1/8/3/8/1x9a1775/1x9a1775-thumb_1920.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Памятник Муравьёву-Амурскому</h3>
+                        
+                        <p>Памятник графу Николаю Муравьёву-Амурскому — генерал-губернатору, который внёс огромный вклад в освоение Дальнего Востока.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Памятник</span>
+                            <span class="sight-tag">История</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://www.teleport2001.ru/files/teleport/images/news/2024/05/23/%D1%84%D0%BE%D0%BD%D1%82.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Площадь Ленина с светомузыкальным фонтаном</h3>
+                        
+                        <p>Центральная площадь Благовещенска с большим светомузыкальным фонтаном. Вечером шоу длится до 23:00 (летом). Вокруг лавочки, работает уличное кафе и прокат самокатов. Любимое место для встреч и тусовок.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Фотозона</span>
+                            <span class="sight-tag">Атракцион</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://travelrussia.ru/upload/medialibrary/f58/uw7j7sh6jwoqgvinl3btm02uvgi0yuu7.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Парк Дружбы</h3>
+                        
+                        <p>Современный парк с фонтанами и зонами отдыха, любимое место горожан для прогулок. Здесь часто проходят городские праздники и концерты.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Парк</span>
+                            <span class="sight-tag">Отдых</span>
+                            <span class="sight-tag">Семейный</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Природные достопримечательности -->
+        <section class="sights-section">
+            <div class="section-header">
+                <h2>Природные достопримечательности</h2>
+            </div>
+            <div class="sights-grid">
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://news.store.rambler.ru/img/5cf4ea782e41a315e0bbd84ec834bf95?img-format=auto&img-1-resize=height:710');"></div>
+                    <div class="sight-content">
+                        <h3>Хинганский заповедник</h3>
+                        
+                        <p>Уникальный заповедник, где обитают редкие виды животных. Особенно знаменит своими лотосами Комарова — они цветут здесь в конце июля и начале августа.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Заповедник</span>
+                            <span class="sight-tag">Лотосы</span>
+                            <span class="sight-tag">Птицы</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://api.amurobl.tv/upload/resize_cache/iblock/4e5/1280_1040_1/3lqaj4xqpyth2g9fix9jpifse1xrbo4e.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Муравьёвский парк журавлей</h3>
+                        
+                        <p>Уникальный экологический парк, созданный для сохранения японских и даурских журавлей. Здесь можно вживую понаблюдать за этими редкими птицами.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Экотуризм</span>
+                            <span class="sight-tag">Птицы</span>
+                            <span class="sight-tag">Фотоохота</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/%D0%90%D0%BB%D0%B1%D0%B0%D0%B7%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B3.jpg/1280px-%D0%90%D0%BB%D0%B1%D0%B0%D0%B7%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9_%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B3.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Албазинский острог</h3>
+                        
+                        <p>Историческая крепость XVII века — место знаменитой Албазинской обороны. Сейчас здесь находится музей и реконструированная крепость.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Крепость</span>
+                            <span class="sight-tag">История</span>
+                            <span class="sight-tag">Музей</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://moya-planeta.ru/upload/images/xl/e0/5f/e05fb7474fda2e5e552598f9aa7c8e1f5036b2bb.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Экотропа «Амурские скалы»</h3>
+                        
+                        <p>Обустроенная пешеходная тропа вдоль берега Амура с деревянными настилами и смотровыми площадками. Протяжённость 3 км. По пути — живописные скальные выходы, информационные стенды о флоре и фауне, лавочки для отдыха.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Парк</span>
+                            <span class="sight-tag">Фотозоны</span>
+                            <span class="sight-tag">Скалы</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://ampravda.ru/files/images2/images/198508202_1167667030376628_5291105237526585667_n.jpg');"></div>
+                    <div class="sight-content">
+                        <h3>Бурейский каньон</h3>
+                        
+                        <p>Живописное ущелье на реке Бурее с отвесными скалами. Популярное место для сплавов и фотосессий.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Каньон</span>
+                            <span class="sight-tag">Сплав</span>
+                            <span class="sight-tag">Фотозона</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sight-card">
+                    <div class="sight-image" style="background-image: url('https://avatars.mds.yandex.net/get-altay/9707320/2a0000018a7ee6c740337012b3e594a43da7/orig');"></div>
+                    <div class="sight-content">
+                        <h3>Лотосовое озеро</h3>
+                        
+                        <p>Уникальное озеро, где каждое лето цветут розовые лотосы. Настоящее чудо природы на Дальнем Востоке.</p>
+                        <div class="sight-tags">
+                            <span class="sight-tag">Озеро</span>
+                            <span class="sight-tag">Лотосы</span>
+                            <span class="sight-tag">Медитация</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Информация для туристов -->
+        <section class="sights-section" style="background-color: var(--secondary); padding: 40px; border-radius: 24px; margin-bottom: 64px;">
+            <div style="display: flex; gap: 40px; align-items: stretch; flex-wrap: wrap;">
+                <!-- Колонка 1: Топ-3 отеля -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 28px; margin-bottom: 25px;">Топ-3 отеля в Благовещенске</h3>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: var(--shadow);">
+                            <h4 style="font-size: 20px; margin-bottom: 8px; color: var(--accent);">Asia Hotel</h4>
+                            <p style="color: var(--text-secondary);"><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--accent);"></i> ул. Ленина, 108, Благовещенск</p>
+                            <p style="margin-top: 10px;">Современный отель в центре города, рядом с набережной. Есть спа-центр, ресторан и подземный паркинг.</p>
+                        </div>
+                        <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: var(--shadow);">
+                            <h4 style="font-size: 20px; margin-bottom: 8px; color: var(--accent);">Гранд-отель Благовещенск</h4>
+                            <p style="color: var(--text-secondary);"><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--accent);"></i> ул. Калинина, 1/2, Благовещенск</p>
+                            <p style="margin-top: 10px;">Отель премиум-класса с панорамными видами на Амур и Китай. Круглосуточный фитнес-центр, ресторан с видом.</p>
+                        </div>
+                        <div style="background: white; border-radius: 16px; padding: 20px; box-shadow: var(--shadow);">
+                            <h4 style="font-size: 20px; margin-bottom: 8px; color: var(--accent);">Green House Hotel</h4>
+                            <p style="color: var(--text-secondary);"><i class="fas fa-map-marker-alt" style="margin-right: 10px; color: var(--accent);"></i> ул. Горького, 190, Благовещенск</p>
+                            <p style="margin-top: 10px;">Уютный отель с домашней атмосферой и отличными завтраками. Отличный вариант для бюджетного размещения.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Колонка 2: Лучшее время -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3 style="font-size: 28px; margin-bottom: 25px;">Лучшее время для поездки</h3>
+                    <div style="margin-bottom: 20px; border-radius: 16px; overflow: hidden; height: 200px;">
+                        <img src="https://avatars.mds.yandex.net/get-altay/2701558/2a000001736c03a1f957fe26d7f5f0660785/XXL_height" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div style="background: white; border-radius: 16px; padding: 25px; box-shadow: var(--shadow);">
+                        <p><strong>Май - июнь</strong> — Теплеет (+18..+25°C), цветут сады, природа просыпается. Отлично для прогулок по городу.</p>
+                        <p style="margin-top: 15px;"><strong>Июль - август</strong> — Самый теплый период (+25..+32°C). Пик туристического сезона, цветение лотосов в Хинганском заповеднике.</p>
+                        <p style="margin-top: 15px;"><strong>Сентябрь - октябрь</strong> — Золотая осень, температура +10..+20°C. Красивые виды на Амур, меньше туристов.</p>
+                        <p style="margin-top: 15px;"><strong>Декабрь - февраль</strong> — Настоящая русская зима (-25..-35°C). Можно гулять по льду Амура и посетить космодром Восточный.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>RuTrip</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">О проекте</a></li>
+                        <li><a href="#">Команда</a></li>
+                        <li><a href="#">Вакансии</a></li>
+                        <li><a href="#">Партнеры</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Помощь</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Часто задаваемые вопросы</a></li>
+                        <li><a href="#">Поддержка</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Сообщить об ошибке</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Правовая информация</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Пользовательское соглашение</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">Условия использования</a></li>
+                        <li><a href="#">Файлы cookie</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Социальные сети</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">ВКонтакте</a></li>
+                        <li><a href="#">Telegram</a></li>
+                        <li><a href="#">Max</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 RuTrip</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+        (function() {
+            const mascot = document.getElementById('mascot');
+            const footer = document.getElementById('footer');
+            
+            if (!mascot || !footer) return;
+
+            function checkMascotVisibility() {
+                const footerRect = footer.getBoundingClientRect();
+                const mascotRect = mascot.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+
+                if (footerRect.top < windowHeight && footerRect.bottom > 0) {
+                    if (mascotRect.bottom > footerRect.top - 50) {
+                        mascot.style.opacity = '0';
+                        mascot.style.pointerEvents = 'none';
+                        mascot.style.transition = 'opacity 0.3s ease';
+                    } else {
+                        mascot.style.opacity = '1';
+                        mascot.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    mascot.style.opacity = '1';
+                    mascot.style.pointerEvents = 'auto';
+                }
+            }
+
+            window.addEventListener('scroll', checkMascotVisibility);
+            window.addEventListener('resize', checkMascotVisibility);
+            checkMascotVisibility();
+
+            if (mascot) {
+                mascot.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
