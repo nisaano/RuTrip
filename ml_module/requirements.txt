@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+pymorphy3
+pymorphy3-dicts-ru
+httpx
+pytest
+pytest-asyncio
+pymorphy3
